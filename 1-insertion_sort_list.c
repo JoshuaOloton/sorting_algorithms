@@ -2,9 +2,8 @@
 #include "sort.h"
 
 /**
- * insertion_sort - bubble sort algorithm function
- * @array: array to be sorted
- * @size: size of array
+ * insertion_sort_list - bubble sort algorithm function
+ * @list: list to be sorted
  *
  * Return: void
  */
@@ -13,7 +12,7 @@ void insertion_sort_list(listint_t **list)
 {
 	listint_t *bf, *curr;
 
-	if ((*list) == NULL || (*list)->next == NULL)
+	if (list == NULL)
 		return;
 	curr = (*list)->next;
 	while (curr)
@@ -21,7 +20,7 @@ void insertion_sort_list(listint_t **list)
 		while (curr->n < curr->prev->n && curr->prev)
 		{
 			bf = curr->prev;
-	
+
 			curr->prev = bf->prev;
 			bf->next = curr->next;
 			if (bf->prev)
