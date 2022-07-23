@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include "sort.h"
 
 /**
@@ -10,48 +11,38 @@
 
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *af, *curr, *temp;
+	listint_t *bf, *curr;
 
-	curr = *list;
-	while (curr->next)
+	if ((*list) == NULL || (*list)->next == NULL)
+		return;
+	curr = (*list)->next;
+	while (curr)
 	{
-		af = (*list)->next;
-		while ((*list)->n > af->n && af->prev != NULL)
+		while (curr->n < curr->prev->n && curr->prev)
 		{
-			if ((*list)->prev == NULL)
+			bf = curr->prev;
+	
+			curr->prev = bf->prev;
+			bf->next = curr->next;
+			if (bf->prev)
 			{
-				(*list)->next = af->next;
-				af->next->prev = (*list);
-				(*list)->prev = af;
-
-				af->next = (*list);
-				af->prev = NULL;
+				bf->prev->next = curr;
 			}
-			else if (af->next == NULL)
+			if (curr->next)
 			{
-				af->next = (*list);
-                                af->prev = (*list)->prev;
-
-				(*list)->next = NULL;
-				(*list)->prev= af;
-				(*list)->prev->next = af;
+				curr->next->prev = bf;
 			}
-			else
+			curr->next = bf;
+			bf->prev = curr;
+			bf = curr->prev;
+			if (curr->prev == NULL)
 			{
-				(*list)->prev->next = af;
-				af->prev = (*list)->prev;
-
-				(*list)->next = af->next;
-				af->next->prev = (*list);
-
-				af->next = (*list);
-				(*list)->prev = af;
+				(*list) = curr;
+				print_list(*list);
+				break;
 			}
-			temp = (*list);
-			*list = af;
-			af = temp;
-			af = af->prev;
+			print_list(*list);
 		}
-		(*list) = (*list)->next;
+		curr = curr->next;
 	}
 }
